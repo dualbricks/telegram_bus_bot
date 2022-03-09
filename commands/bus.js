@@ -62,36 +62,31 @@ module.exports = {
     });
 
     // loop to get ETA for buses in each nearby bus stop
+    var text = "";
+    // loop to get ETA for buses in each nearby bus stop
     async function busStop_info() {
       for (const busCode of nearby_buslist) {
       var bus_list = await busStop.execute(busCode.buscode);
       var busStopinfo = [busCode.Des, Math.round(busCode.dist), bus_list];
-      console.log(busStopinfo);
+      var busStopText = `🅿️Bus Stop: ${busStopinfo[0]} \nDistance from you: ${busStopinfo[1]}m\n`;
+      
       var bus_services = "";
       busStopinfo[2].forEach((busSev) => {
         bus_services =
           bus_services +
-          "Bus Service: " +
+          "🚌Bus Service: " +
           busSev["busNo"] +
           "\nETA: " +
           busSev["ETA"] +
           "\n";
       });
-      console.log(bus_services);
+      text =  text + busStopText + bus_services + "------------------------------\n";
+      }
       async function send_msg() {
-        await bot.reply(
-          `Bus Stop:${busStopinfo[0]} \nDistance from you: ${busStopinfo[1]}m\n`
-        );
+        bot.reply(text);
         
-        await bot.reply(bus_services);
-        await bot.reply(
-          "-------------------------------------------------------------"
-        );
       }
-
       await send_msg();
-        
-      }
     }
     await busStop_info();
     bot.reply(

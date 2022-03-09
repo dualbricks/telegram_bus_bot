@@ -1,11 +1,11 @@
-const { Telegraf } = require('telegraf')
-const bot = new Telegraf(process.env.bot_key)
+const { Telegraf } = require('telegraf');
+const bot = new Telegraf(process.env.bot_key);
 const bus_command = require('./commands/bus');
-
+const bus_code_command = require('./commands/busStop');
 
 //bot start command
 bot.start( async (ctx) => {
-  console.log('working')
+  console.log('working');
   ctx.reply("Welcome");
   bot.telegram.sendMessage(ctx.chat.id, 'Can we access your location?', requestLocationKeyboard);
 })

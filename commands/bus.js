@@ -3,43 +3,22 @@ module.exports = {
   description: "Return the ETA of buses at a given location/Bus Stop",
   async execute(ctx, bot) {
     // setting up necessary modules
-    const axios = require("axios");
     const busStop = require("./busStop");
     const haversine = require("haversine-distance");
     // object for location of user
     var lat = parseFloat(ctx["latitude"]);
     var lon = parseFloat(ctx["longitude"]);
     var user_location = { lat: lat, lng: lon };
-
-    // Getter function
-    async function getBusData(url, config) {
-      let res = await axios.get(url, config);
-      let data = res.data;
-      return data;
-    }
-
-    var number = 0;
-
-    // Configuration for API calls
-    let url1 = `http://datamall2.mytransport.sg/ltaodataservice/BusStops?$skip=${number}`;
-    let config = {
-      headers: {
-        accept: "application/json",
-        AccountKey: process.env.bus_key,
-      },
-    };
-    var bus_data = [];
-
-    // Loop to get all the bus stops
-    while (number <= 5000) {
-      var busStopData = await getBusData(url1, config);
-      bus_data.push.apply(bus_data, busStopData["value"]);
-      number += 500;
-      url1 = `http://datamall2.mytransport.sg/ltaodataservice/BusStops?$skip=${number}`;
+    // read from file
+    function read(path) {
+      const fileContent = fs.readFileSync(path);
+      const array = JSON.parse(fileContent);
+      return array;
     }
 
     var nearby_buslist = [];
-
+    // getting no. of bus stops through data stored in file
+    var bus_data = read('./busData.txt');
     bus_data.forEach((busStop) => {
       var busLat = parseFloat(busStop["Latitude"]);
       var busLon = parseFloat(busStop["Longitude"]);
@@ -48,7 +27,7 @@ module.exports = {
 
       // nearby bus stop within 500m
 
-      if (dist <= 300) {
+      if (dist <= 400) {
         nearby_buslist.push({
           buscode: busStop.BusStopCode,
           Des: busStop.Description,

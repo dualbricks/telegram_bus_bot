@@ -50,7 +50,7 @@ bot.on('message', async (ctx)=> {
       ctx.reply(text).catch();
     }
     else {
-      ctx.reply("No information please double check Bus Code")
+      ctx.reply("No information please double check Bus Code");
     }
   }
 })

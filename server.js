@@ -1,4 +1,4 @@
-const { Telegraf } = require('telegraf')
+const { Telegraf } = require('telegraf');
 const bot = new Telegraf(process.env.bot_key);
 const bus_command = require('./commands/bus');
 const bus_code_command = require('./commands/busStop');

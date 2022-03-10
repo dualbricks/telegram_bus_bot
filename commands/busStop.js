@@ -68,6 +68,10 @@ module.exports = {
       
       nextBusList.push({ busNo: bus.ServiceNo, ETA: time });
     });
+    //sort
+    nextBusList.sort(function(a,b){
+      return a.busNo - b.busNo;
+    });
     // The list of ETA for the buses at the bus stop
     return nextBusList;
   },

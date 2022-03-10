@@ -41,9 +41,9 @@ bot.on('message', async (ctx)=> {
       text = text +
           "🚌Bus Service: " +
           busNo["busNo"] +
-          "\nETA: " +
+          "\n🕐ETA: " +
           busNo["ETA"] +
-          "\n";
+          "\n\n";
     })
     
     if(text != "") {

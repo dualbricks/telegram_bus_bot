@@ -55,9 +55,9 @@ module.exports = {
           bus_services +
           "🚌Bus Service: " +
           busSev["busNo"] +
-          "\nETA: " +
+          "\n🕐ETA: " +
           busSev["ETA"] +
-          "\n";
+          "\n\n";
       });
       text =  text + busStopText + bus_services + "------------------------------\n";
       }
@@ -68,8 +68,6 @@ module.exports = {
       await send_msg();
     }
     await busStop_info();
-    bot.reply(
-      "If you are seeing this, the info is retreived correctly from LTA"
-    );
+    
   },
 };

@@ -6,6 +6,10 @@ module.exports = {
     // Getting axios client 
     const axios = require("axios");
     
+    var crowd_dict = {
+      "SEA": "🟢", "SDA": "🟠", "LSD":"🔴"
+    };
+    
     // getting ETA given time
     function estimatedTime(busTime) {
       var time_bus = busTime.split(/[T+]/)[1];
@@ -61,12 +65,27 @@ module.exports = {
     let bus_data = await getBusData(url, config);
     var services = bus_data["Services"];
     services.forEach((bus) => {
-      var time = estimatedTime(bus.NextBus.EstimatedArrival);
-      if (bus.NextBus == null) {
-        time = "Here";
+      if (bus.NextBus.EstimatedArrival) {
+        var time1 = estimatedTime(bus.NextBus.EstimatedArrival);
+        var crowd1 = crowd_dict[bus.NextBus.Load];
+      }
+      else{
+        var time1 = "No Info"
+        var crowd1 = "";
+      }
+      if (bus.NextBus2.EstimatedArrival) {
+        var time2 = estimatedTime(bus.NextBus2.EstimatedArrival);
+        var crowd2 = crowd_dict[bus.NextBus2.Load]; 
+        
+      }
+      else{
+        var time2 = "";
+        var crowd2 = "";
       }
       
-      nextBusList.push({ busNo: bus.ServiceNo, ETA: time });
+      
+      
+      nextBusList.push({ busNo: bus.ServiceNo, ETA1: time1, ETA2:time2, Load1: crowd1, Load2: crowd2 });
     });
     //sort
     nextBusList.sort(function(a,b){

@@ -56,15 +56,19 @@ module.exports = {
           "🚌Bus Service: " +
           busSev["busNo"] +
           "\n🕐ETA: " +
-          busSev["ETA"] +
+          busSev["ETA1"] + busSev["Load1"] + ", " + busSev["ETA2"] + busSev["Load2"] +
           "\n\n";
       });
       text =  text + busStopText + bus_services + "------------------------------\n";
       }
       async function send_msg() {
-        bot.reply(text);
-        
+        if(!text) {
+          bot.reply("No information at the moment./No nearby bus stops within 300m from you");
+          return;
+        }
+        bot.reply("🟢= LOW crowd,🟠= MODERATE crowd\n🔴= BIG crowd\n\n"+text)
       }
+
       await send_msg();
     }
     await busStop_info();

@@ -42,14 +42,13 @@ bot.on('message', async (ctx)=> {
           "🚌Bus Service: " +
           busNo["busNo"] +
           "\n🕐ETA: " +
-          busNo["ETA"] +
+          busNo["ETA1"] + busNo["Load1"] + ", " + busNo["ETA2"] + busNo["Load2"]+
           "\n\n";
     })
     
-    if(text != "") {
-      ctx.reply(text).catch();
-    }
-    else {
+    if (text != "") {
+      ctx.reply("🟢= LOW crowd,🟠= MODERATE crowd\n🔴= BIG crowd\n\n"+text).catch();
+    } else {
       ctx.reply("No information please double check Bus Code");
     }
   }

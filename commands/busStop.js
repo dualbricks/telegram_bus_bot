@@ -1,15 +1,14 @@
 module.exports = {
   name: "busStop",
   description: "return the ETA of buses at a given Bus Stop Code",
-  async execute(ctx, bot) {
+  async execute(ctx, bot, saving=false) {
     
     // Getting axios client 
     const axios = require("axios");
     
     var crowd_dict = {
       "SEA": "🟢", "SDA": "🟠", "LSD":"🔴"
-    };
-    
+    }
     // getting ETA given time
     function estimatedTime(busTime) {
       var time_bus = busTime.split(/[T+]/)[1];
@@ -36,7 +35,7 @@ module.exports = {
 
       if (estimatedMin <= 0.5) {
         estimatedMin = "Arriving";
-        return estimatedMin
+        return estimatedMin;
       }
       if (estimatedMin <= 1) {
         return estimatedMin + 'Min';
@@ -51,6 +50,7 @@ module.exports = {
       let data = res.data;
       return data;
     }
+    
 
     //configuration for API calls
     let url = `http://datamall2.mytransport.sg/ltaodataservice/BusArrivalv2?BusStopCode=${ctx}`;
@@ -62,7 +62,7 @@ module.exports = {
     };
     // Getting services in a given bus stop
     var nextBusList = [];
-    let bus_data = await getBusData(url, config);
+    let bus_data = await getBusData(url, config).catch();
     var services = bus_data["Services"];
     services.forEach((bus) => {
       if (bus.NextBus.EstimatedArrival) {
@@ -88,7 +88,7 @@ module.exports = {
       nextBusList.push({ busNo: bus.ServiceNo, ETA1: time1, ETA2:time2, Load1: crowd1, Load2: crowd2 });
     });
     //sort
-    nextBusList.sort(function(a,b){
+    nextBusList.sort(function (a, b) {
       return a.busNo - b.busNo;
     });
     // The list of ETA for the buses at the bus stop
